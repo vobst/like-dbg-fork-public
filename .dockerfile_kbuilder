@@ -1,0 +1,45 @@
+FROM lkd_dbg_base:latest
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ARG TOOLCHAIN_ARCH
+ARG CC
+ARG LLVM
+ARG ARCH
+ARG USER
+ARG CROSS_COMPILE
+
+RUN apt-get update && \
+    set -e && \
+    apt-get install -yq --no-install-recommends \
+        libncurses-dev \
+        libssl-dev \
+        xz-utils \
+        ccache \
+        bc \
+        gcc-$TOOLCHAIN_ARCH-linux-gnu \
+        binutils-$TOOLCHAIN_ARCH-linux-gnu \
+        flex \
+        bison \
+        cpio \
+        rsync \
+        llvm \
+        clang \
+        lld \
+        lldb \
+    	dwarves \
+        libelf-dev && \
+    apt-get -y autoremove --purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/$USER
+
+RUN echo "CROSS_COMPILE=$CANADIAN_CROSS" >> /etc/environment && \
+    echo "CC=$CC" >> /etc/environment && \
+    echo "LLVM=$LLVM" >> /etc/environment && \
+    echo "ARCH=$ARCH" >> /etc/environment
+
+WORKDIR /io
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 --start-period=2s CMD ps aux | grep "sshd -D" | grep -v grep || exit 1
+CMD ["/usr/sbin/sshd", "-D"]

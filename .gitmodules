@@ -1,0 +1,3 @@
+[submodule "io/scripts/pt-dump"]
+	path = io/scripts/pt-dump
+	url = https://github.com/martinradev/gdb-pt-dump

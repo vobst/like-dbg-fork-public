@@ -1,0 +1,74 @@
+FROM lkd_dbg_base:latest
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV LC_ALL=en_US.UTF-8
+
+RUN apt-get update && \
+    set -e && \
+    apt-get install -yq --no-install-recommends \
+        qemu-system-x86 \
+        openssl \
+	b4							\
+	git	\
+	libglib2.0-dev 						\
+	libfdt-dev 						\
+	libpixman-1-dev 					\
+	zlib1g-dev 						\
+	ninja-build						\
+        binfmt-support && \
+    apt-get -y autoremove --purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    set -e && \
+    apt-get install -y --no-install-recommends \
+	git-email						\
+	libaio-dev 						\
+	libbluetooth-dev 					\
+	libcapstone-dev 					\
+	libbrlapi-dev 						\
+	libbz2-dev						\
+	libcap-ng-dev 						\
+	libcurl4-gnutls-dev 					\
+	libgtk-3-dev						\
+	libibverbs-dev						\
+	libjpeg8-dev 						\
+	libncurses5-dev 					\
+	libnuma-dev						\
+	librbd-dev						\
+	librdmacm-dev						\
+	libsasl2-dev 						\
+	libsdl2-dev 						\
+	libseccomp-dev 						\
+	libsnappy-dev 						\
+	libssh-dev						\
+	libvde-dev						\
+	libvdeplug-dev						\
+	libvte-2.91-dev						\
+	libxen-dev						\
+	liblzo2-dev						\
+	valgrind						\
+        libnfs-dev 						\
+        libiscsi-dev						\
+	xfslibs-dev
+
+RUN apt-get update && \
+    set -e && \
+    apt-get install -y --no-install-recommends \
+	libslirp-dev
+
+
+WORKDIR /opt
+RUN git clone https://github.com/qemu/qemu
+RUN true
+WORKDIR /opt/qemu
+RUN b4 am 20230421041227.90915-1-weijiang.yang@intel.com	&& \
+	git config --global user.email "you@example.com"	&& \
+  	git config --global user.name "Your Name"		&& \
+	git checkout c283ff89d11ff123efc9af49128ef58511f73012	&& \
+	git am ./20230421_weijiang_yang_enable_vmm_userspace_support_for_cet_virtualization.mbx && \
+	./configure --target-list=x86_64-softmmu		&& \
+	make -j$(nproc)
+
+WORKDIR /io
