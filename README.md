@@ -33,7 +33,8 @@ tmux
 ## Usage
 
 You can download the exploit's source code from its public
-repository [[]()]. Some things you might find useful when experimenting
+repository [[](https://github.com/vobst/ctf-corjail-public)].
+Some things you might find useful when experimenting
 with the exploit yourself:
 - Select the gdb script with the `gdb_script` setting in
 `./configs/user.ini`. You might want to switch between the one for
