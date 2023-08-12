@@ -1,6 +1,6 @@
 Public release of a pile of scripts I use for Linux debugging.
-Intended to allow readers to reproduce my blog post on the Corjail
-CTF challenge [[]()].
+Intended to allow readers to reproduce my [blog posts](https://blog.eb9f.de/2023/07/20/Linux-S1-E1.html) on the [Corjail
+CTF challenge](https://github.com/vobst/ctf-corjail-public).
 
 ## Getting Started
 Follow those steps to set up the debugging environment used in the blog
